@@ -1,9 +1,20 @@
-# Watch workspace files and auto-push shortly after saves
+# Poll for local changes and auto-push to GitHub
 $ErrorActionPreference = 'Continue'
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $pushScript = Join-Path $PSScriptRoot 'auto-push.ps1'
 $pidFile = Join-Path $PSScriptRoot '.watch.pid'
+
+$gitCmd = $null
+$gitFromPath = Get-Command git -ErrorAction SilentlyContinue
+if ($gitFromPath) {
+    $gitCmd = $gitFromPath.Source
+} elseif (Test-Path 'C:\Program Files\Git\cmd\git.exe') {
+    $gitCmd = 'C:\Program Files\Git\cmd\git.exe'
+} else {
+    Write-Host 'git not found; watcher exiting'
+    exit 1
+}
 
 if (Test-Path $pidFile) {
     $oldPid = Get-Content $pidFile -ErrorAction SilentlyContinue
@@ -17,58 +28,18 @@ if (Test-Path $pidFile) {
 }
 Set-Content -Path $pidFile -Value $PID
 
-$script:pending = $false
-$script:pushScript = $pushScript
-$script:repoRoot = $repoRoot
-
-function Should-Skip([string]$path) {
-    if ($path -match '\\.git\\') { return $true }
-    if ($path -match '\\.cursor\\hooks\\\.auto-push\.lock$') { return $true }
-    if ($path -match '\\.cursor\\hooks\\\.watch\.pid$') { return $true }
-    return $false
-}
-
-function Queue-Push {
-    $script:pending = $true
-}
-
-$watcher = New-Object System.IO.FileSystemWatcher
-$watcher.Path = $repoRoot
-$watcher.IncludeSubdirectories = $true
-$watcher.Filter = '*.*'
-$watcher.NotifyFilter = [IO.NotifyFilters]::FileName -bor [IO.NotifyFilters]::LastWrite -bor [IO.NotifyFilters]::Size
-$watcher.EnableRaisingEvents = $true
-
-$null = Register-ObjectEvent -InputObject $watcher -EventName Changed -SourceIdentifier AutoPushChanged -Action {
-    if (-not (Should-Skip $Event.SourceEventArgs.FullPath)) { Queue-Push }
-}
-$null = Register-ObjectEvent -InputObject $watcher -EventName Created -SourceIdentifier AutoPushCreated -Action {
-    if (-not (Should-Skip $Event.SourceEventArgs.FullPath)) { Queue-Push }
-}
-$null = Register-ObjectEvent -InputObject $watcher -EventName Renamed -SourceIdentifier AutoPushRenamed -Action {
-    if (-not (Should-Skip $Event.SourceEventArgs.FullPath)) { Queue-Push }
-}
-$null = Register-ObjectEvent -InputObject $watcher -EventName Deleted -SourceIdentifier AutoPushDeleted -Action {
-    if (-not (Should-Skip $Event.SourceEventArgs.FullPath)) { Queue-Push }
-}
-
-Write-Host "Watching $repoRoot for changes (auto-push enabled)"
+Write-Host "Watching $repoRoot for changes (auto-push every few seconds when dirty)"
 
 try {
     while ($true) {
-        Start-Sleep -Seconds 3
-        if ($script:pending) {
-            $script:pending = $false
-            & powershell -NoProfile -ExecutionPolicy Bypass -File $script:pushScript
+        Start-Sleep -Seconds 5
+        Set-Location -LiteralPath $repoRoot
+        $status = & $gitCmd status --porcelain 2>$null
+        if ($status) {
+            & powershell -NoProfile -ExecutionPolicy Bypass -File $pushScript
         }
     }
 }
 finally {
-    Unregister-Event -SourceIdentifier AutoPushChanged -ErrorAction SilentlyContinue
-    Unregister-Event -SourceIdentifier AutoPushCreated -ErrorAction SilentlyContinue
-    Unregister-Event -SourceIdentifier AutoPushRenamed -ErrorAction SilentlyContinue
-    Unregister-Event -SourceIdentifier AutoPushDeleted -ErrorAction SilentlyContinue
-    $watcher.EnableRaisingEvents = $false
-    $watcher.Dispose()
     Remove-Item $pidFile -Force -ErrorAction SilentlyContinue
 }
