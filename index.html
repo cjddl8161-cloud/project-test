@@ -422,6 +422,7 @@
                 formId: 'signup-form',
                 statusId: 'signup-status',
                 submitId: 'signup-submit',
+                kind: 'signup',
                 pendingText: '가입 신청을 전송하는 중...',
                 successText: '회원가입이 완료되었습니다. 확인 후 연락드리겠습니다.'
             });
@@ -430,13 +431,14 @@
                 formId: 'comment-form',
                 statusId: 'comment-status',
                 submitId: 'comment-submit',
+                kind: 'comment',
                 pendingText: '댓글을 등록하는 중...',
                 successText: '댓글이 등록되었습니다.',
                 onSuccess: function (formData) {
                     var comments = loadComments();
                     comments.unshift({
-                        name: formData.get('name') || '익명',
-                        message: formData.get('message') || '',
+                        name: formData.get('작성자') || '익명',
+                        message: formData.get('댓글내용') || '',
                         createdAt: new Date().toLocaleString('ko-KR')
                     });
                     saveComments(comments.slice(0, 50));
