@@ -318,43 +318,122 @@
                 });
             }
 
-            var form = document.getElementById('signup-form');
-            var statusEl = document.getElementById('signup-status');
-            var submitBtn = document.getElementById('signup-submit');
-            if (!form || !statusEl || !submitBtn) return;
+            function bindFormspreeForm(options) {
+                var form = document.getElementById(options.formId);
+                var statusEl = document.getElementById(options.statusId);
+                var submitBtn = document.getElementById(options.submitId);
+                if (!form || !statusEl || !submitBtn) return;
 
-            form.addEventListener('submit', async function (event) {
-                event.preventDefault();
-                statusEl.classList.remove('hidden', 'text-green-600', 'dark:text-green-400', 'text-red-600', 'dark:text-red-400');
-                statusEl.textContent = '가입 신청을 전송하는 중...';
-                statusEl.classList.add('text-slate-500', 'dark:text-slate-400');
-                submitBtn.disabled = true;
+                form.addEventListener('submit', async function (event) {
+                    event.preventDefault();
+                    statusEl.classList.remove('hidden', 'text-green-600', 'dark:text-green-400', 'text-red-600', 'dark:text-red-400', 'text-slate-500', 'dark:text-slate-400');
+                    statusEl.textContent = options.pendingText;
+                    statusEl.classList.add('text-slate-500', 'dark:text-slate-400');
+                    submitBtn.disabled = true;
 
-                try {
-                    var response = await fetch(form.action, {
-                        method: 'POST',
-                        body: new FormData(form),
-                        headers: { Accept: 'application/json' }
-                    });
+                    var formData = new FormData(form);
 
-                    statusEl.classList.remove('text-slate-500', 'dark:text-slate-400');
-                    if (response.ok) {
-                        form.reset();
-                        statusEl.textContent = '회원가입이 완료되었습니다. 확인 후 연락드리겠습니다.';
-                        statusEl.classList.add('text-green-600', 'dark:text-green-400');
-                    } else {
-                        statusEl.textContent = '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.';
+                    try {
+                        var response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: { Accept: 'application/json' }
+                        });
+
+                        statusEl.classList.remove('text-slate-500', 'dark:text-slate-400');
+                        if (response.ok) {
+                            if (typeof options.onSuccess === 'function') {
+                                options.onSuccess(formData);
+                            }
+                            form.reset();
+                            statusEl.textContent = options.successText;
+                            statusEl.classList.add('text-green-600', 'dark:text-green-400');
+                        } else {
+                            statusEl.textContent = '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.';
+                            statusEl.classList.add('text-red-600', 'dark:text-red-400');
+                        }
+                    } catch (err) {
+                        statusEl.classList.remove('text-slate-500', 'dark:text-slate-400');
+                        statusEl.textContent = '네트워크 오류가 발생했습니다. 다시 시도해 주세요.';
                         statusEl.classList.add('text-red-600', 'dark:text-red-400');
+                    } finally {
+                        submitBtn.disabled = false;
+                        statusEl.classList.remove('hidden');
                     }
-                } catch (err) {
-                    statusEl.classList.remove('text-slate-500', 'dark:text-slate-400');
-                    statusEl.textContent = '네트워크 오류가 발생했습니다. 다시 시도해 주세요.';
-                    statusEl.classList.add('text-red-600', 'dark:text-red-400');
-                } finally {
-                    submitBtn.disabled = false;
-                    statusEl.classList.remove('hidden');
+                });
+            }
+
+            var COMMENT_KEY = 'tutor_comments';
+            var commentList = document.getElementById('comment-list');
+            var commentEmpty = document.getElementById('comment-empty');
+
+            function loadComments() {
+                try {
+                    return JSON.parse(localStorage.getItem(COMMENT_KEY) || '[]');
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function saveComments(comments) {
+                try {
+                    localStorage.setItem(COMMENT_KEY, JSON.stringify(comments));
+                } catch (e) {}
+            }
+
+            function escapeHtml(text) {
+                return String(text)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function renderComments() {
+                if (!commentList || !commentEmpty) return;
+                var comments = loadComments();
+                commentList.innerHTML = comments.map(function (item) {
+                    return (
+                        '<article class="bg-slate-50 dark:bg-slate-800/60 p-5 rounded-xl border border-slate-100 dark:border-slate-700">' +
+                        '<div class="flex justify-between items-center gap-3 mb-2">' +
+                        '<strong class="text-sm text-slate-900 dark:text-white">' + escapeHtml(item.name) + '</strong>' +
+                        '<time class="text-xs text-slate-400">' + escapeHtml(item.createdAt) + '</time>' +
+                        '</div>' +
+                        '<p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">' + escapeHtml(item.message) + '</p>' +
+                        '</article>'
+                    );
+                }).join('');
+                commentEmpty.classList.toggle('hidden', comments.length > 0);
+            }
+
+            bindFormspreeForm({
+                formId: 'signup-form',
+                statusId: 'signup-status',
+                submitId: 'signup-submit',
+                pendingText: '가입 신청을 전송하는 중...',
+                successText: '회원가입이 완료되었습니다. 확인 후 연락드리겠습니다.'
+            });
+
+            bindFormspreeForm({
+                formId: 'comment-form',
+                statusId: 'comment-status',
+                submitId: 'comment-submit',
+                pendingText: '댓글을 등록하는 중...',
+                successText: '댓글이 등록되었습니다.',
+                onSuccess: function (formData) {
+                    var comments = loadComments();
+                    comments.unshift({
+                        name: formData.get('name') || '익명',
+                        message: formData.get('message') || '',
+                        createdAt: new Date().toLocaleString('ko-KR')
+                    });
+                    saveComments(comments.slice(0, 50));
+                    renderComments();
                 }
             });
+
+            renderComments();
         })();
     </script>
 
