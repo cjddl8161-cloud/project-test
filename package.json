@@ -1,4 +1,9 @@
 {
+  "name": "project-test",
+  "private": true,
+  "scripts": {
+    "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File .cursor/hooks/deploy-cloudflare.ps1"
+  },
   "devDependencies": {
     "wrangler": "^4.118.0"
   },
