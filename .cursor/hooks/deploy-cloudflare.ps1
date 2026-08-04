@@ -1,4 +1,4 @@
-# Deploy static site files to Cloudflare Pages (no GitHub)
+# Deploy static site files to Cloudflare Pages project "tutor"
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = if ($PSScriptRoot) {
@@ -8,7 +8,7 @@ $repoRoot = if ($PSScriptRoot) {
 }
 Set-Location -LiteralPath $repoRoot
 
-$projectName = 'project-test'
+$projectName = 'tutor'
 $distDir = Join-Path $repoRoot 'dist'
 
 if (Test-Path $distDir) {
