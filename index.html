@@ -334,6 +334,15 @@
                     submitBtn.disabled = true;
 
                     var formData = new FormData(form);
+                    if (options.kind === 'signup') {
+                        formData.set('_subject', '[회원가입] 과외 사이트 신규 신청');
+                        formData.set('신청구분', '회원가입');
+                        formData.set('요약', '[회원가입] ' + (formData.get('이름') || '') + ' / ' + (formData.get('희망과목') || ''));
+                    } else if (options.kind === 'comment') {
+                        formData.set('_subject', '[댓글] 과외 사이트 새 댓글');
+                        formData.set('신청구분', '댓글');
+                        formData.set('요약', '[댓글] ' + (formData.get('작성자') || '') + ' : ' + String(formData.get('댓글내용') || '').slice(0, 80));
+                    }
 
                     try {
                         var response = await fetch(form.action, {
