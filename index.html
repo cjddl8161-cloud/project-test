@@ -4,75 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>명문대 출신 1:1 맞춤 과외 | [과목명] 전문</title>
+    <!-- Prevent theme flash before paint -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                var dark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (dark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+    </script>
     <!-- Google Fonts (Noto Sans KR) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Noto Sans KR', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
 
     <!-- Header / Navigation -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
-        <div class="max-w-6xl mx-mx-auto px-4 py-4 flex justify-between items-center max-w-6xl mx-auto">
-            <a href="#" class="text-xl font-bold text-indigo-600">[과목/선생님 이름] 과외</a>
-            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
-                <a href="#about" class="hover:text-indigo-600 transition">선생님 소개</a>
-                <a href="#features" class="hover:text-indigo-600 transition">수업 특징</a>
-                <a href="#reviews" class="hover:text-indigo-600 transition">성적 향상 사례</a>
-                <a href="#process" class="hover:text-indigo-600 transition">수업 진행 방식</a>
+    <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-100 dark:border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center gap-3">
+            <a href="#" class="text-xl font-bold text-indigo-600 dark:text-indigo-400 shrink-0">[과목/선생님 이름] 과외</a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+                <a href="#about" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">선생님 소개</a>
+                <a href="#features" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">수업 특징</a>
+                <a href="#reviews" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">성적 향상 사례</a>
+                <a href="#process" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">수업 진행 방식</a>
             </nav>
-            <a href="#contact" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">상담 신청하기</a>
+            <div class="flex items-center gap-2 shrink-0">
+                <button type="button" id="theme-toggle" aria-label="다크/라이트 모드 전환" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="테마 전환">
+                    <!-- sun icon (shown in dark mode) -->
+                    <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2.25M12 18.75V21M4.5 12H2.25M21.75 12H19.5M6.34 6.34L4.75 4.75M19.25 19.25l-1.59-1.59M17.66 6.34l1.59-1.59M4.75 19.25l1.59-1.59M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/>
+                    </svg>
+                    <!-- moon icon (shown in light mode) -->
+                    <svg id="icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                    </svg>
+                </button>
+                <a href="#contact" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">상담 신청하기</a>
+            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="py-20 bg-gradient-to-br from-indigo-50 via-white to-slate-50">
+    <section class="py-20 bg-gradient-to-br from-indigo-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-indigo-950">
         <div class="max-w-6xl mx-auto px-4 text-center">
-            <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-4">하위권부터 상위권까지 1:1 맞춤 케어</span>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">
-                단순 암기가 아닌 <span class="text-indigo-600">개념의 본질</span>을 뚫는<br class="hidden md:block">
+            <span class="inline-block bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">하위권부터 상위권까지 1:1 맞춤 케어</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-6">
+                단순 암기가 아닌 <span class="text-indigo-600 dark:text-indigo-400">개념의 본질</span>을 뚫는<br class="hidden md:block">
                 [수학/영어/국어] 1:1 밀착 과외
             </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+            <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-8">
                 막막했던 공부 방법부터 내신/수능 완벽 대비까지.<br>
                 학생 개개인의 성향과 수준에 맞춘 최적의 커리큘럼을 제공합니다.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#contact" class="bg-indigo-600 text-white px-8 py-3.5 rounded-xl text-base font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">무료 시범수업 및 상담 신청</a>
+                <a href="#contact" class="bg-indigo-600 text-white px-8 py-3.5 rounded-xl text-base font-semibold shadow-lg shadow-indigo-200 dark:shadow-indigo-900/40 hover:bg-indigo-700 transition">무료 시범수업 및 상담 신청</a>
                 <a href="https://open.kakao.com/o/YOUR_KAKAO_LINK" target="_blank" class="bg-yellow-400 text-slate-900 px-8 py-3.5 rounded-xl text-base font-semibold shadow-md hover:bg-yellow-500 transition">카카오톡 오픈채팅 문의</a>
             </div>
         </div>
     </section>
 
     <!-- Tutor Profile Section -->
-    <section id="about" class="py-16 bg-white">
+    <section id="about" class="py-16 bg-white dark:bg-slate-900">
         <div class="max-w-6xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="bg-slate-100 rounded-2xl h-80 flex items-center justify-center text-slate-400 font-medium">
+                <div class="bg-slate-100 dark:bg-slate-800 rounded-2xl h-80 flex items-center justify-center text-slate-400 dark:text-slate-500 font-medium">
                     <!-- 선생님 프로필 이미지 등록 (img 태그로 교체 가능) -->
                     [선생님 프로필 사진 등록 영역]
                 </div>
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">선생님 소개</h2>
-                    <p class="text-slate-600 mb-6 leading-relaxed">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">선생님 소개</h2>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                         안녕하세요! 성적 향상의 기적을 만드는 강사 [선생님 이름]입니다.<br>
                         무작정 문제를 푸는 것이 아니라, **'왜 이 개념이 쓰이는지'** 스몰 스텝 방식으로 쉽게 이해시킵니다.
                     </p>
                     <ul class="space-y-3 mb-6">
-                        <li class="flex items-center text-slate-700 font-medium">
-                            <span class="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span> 고려대학교 [OO학과] 졸업/재학
+                        <li class="flex items-center text-slate-700 dark:text-slate-200 font-medium">
+                            <span class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400 rounded-full mr-3"></span> 고려대학교 [OO학과] 졸업/재학
                         </li>
-                        <li class="flex items-center text-slate-700 font-medium">
-                            <span class="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span> 과외 및 학원 강의 경력 [O]년
+                        <li class="flex items-center text-slate-700 dark:text-slate-200 font-medium">
+                            <span class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400 rounded-full mr-3"></span> 과외 및 학원 강의 경력 [O]년
                         </li>
-                        <li class="flex items-center text-slate-700 font-medium">
-                            <span class="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span> 누적 학생 수 [OO]명 이상 지도
+                        <li class="flex items-center text-slate-700 dark:text-slate-200 font-medium">
+                            <span class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400 rounded-full mr-3"></span> 누적 학생 수 [OO]명 이상 지도
                         </li>
-                        <li class="flex items-center text-slate-700 font-medium">
-                            <span class="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span> 학교별 기출문제 완벽 분석 자료 보유
+                        <li class="flex items-center text-slate-700 dark:text-slate-200 font-medium">
+                            <span class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400 rounded-full mr-3"></span> 학교별 기출문제 완벽 분석 자료 보유
                         </li>
                     </ul>
                 </div>
@@ -81,69 +106,69 @@
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-16 bg-slate-50">
+    <section id="features" class="py-16 bg-slate-50 dark:bg-slate-950">
         <div class="max-w-6xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-3">왜 이 과외를 선택해야 할까요?</h2>
-            <p class="text-slate-600 mb-12">체계적인 수업 시스템과 자체 제작 교재로 확실한 성적 변화를 이끌어냅니다.</p>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-3">왜 이 과외를 선택해야 할까요?</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-12">체계적인 수업 시스템과 자체 제작 교재로 확실한 성적 변화를 이끌어냅니다.</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-left">
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 font-bold text-xl rounded-xl flex items-center justify-center mb-6">01</div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">취약점 진단 & 1:1 맞춤 커리큘럼</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">진단 테스트를 통해 현재 학생의 부족한 단원과 문제 풀이 습관을 파악하여 맞춤형 플랜을 수립합니다.</p>
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 text-left">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 font-bold text-xl rounded-xl flex items-center justify-center mb-6">01</div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">취약점 진단 & 1:1 맞춤 커리큘럼</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">진단 테스트를 통해 현재 학생의 부족한 단원과 문제 풀이 습관을 파악하여 맞춤형 플랜을 수립합니다.</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-left">
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 font-bold text-xl rounded-xl flex items-center justify-center mb-6">02</div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">직접 만든 교재로 핵심만 학습</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">시중 교재가 아닌 선생님이 직접 제작한 교재로 수업합니다. 학교별 출제 경향과 학생 수준에 맞춰 불필요한 내용은 빼고, 꼭 필요한 개념·유형만 압축해 담았습니다.</p>
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 text-left">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 font-bold text-xl rounded-xl flex items-center justify-center mb-6">02</div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">직접 만든 교재로 핵심만 학습</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">시중 교재가 아닌 선생님이 직접 제작한 교재로 수업합니다. 학교별 출제 경향과 학생 수준에 맞춰 불필요한 내용은 빼고, 꼭 필요한 개념·유형만 압축해 담았습니다.</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-left">
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 font-bold text-xl rounded-xl flex items-center justify-center mb-6">03</div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">철저한 복습 & 백지 노트 관리</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">수업 시간에 배운 내용을 학생이 직접 설명할 수 있을 때까지 확인하며 완전 학습을 유도합니다.</p>
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 text-left">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 font-bold text-xl rounded-xl flex items-center justify-center mb-6">03</div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">철저한 복습 & 백지 노트 관리</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">수업 시간에 배운 내용을 학생이 직접 설명할 수 있을 때까지 확인하며 완전 학습을 유도합니다.</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 text-left">
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 font-bold text-xl rounded-xl flex items-center justify-center mb-6">04</div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">24시간 질의응답 & 피드백</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">수업 외 시간에도 카톡을 통해 모르는 문제를 질문할 수 있으며, 매주 학부모님께 학습 일지를 전달합니다.</p>
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 text-left">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 font-bold text-xl rounded-xl flex items-center justify-center mb-6">04</div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">24시간 질의응답 & 피드백</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">수업 외 시간에도 카톡을 통해 모르는 문제를 질문할 수 있으며, 매주 학부모님께 학습 일지를 전달합니다.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Reviews / Results Section -->
-    <section id="reviews" class="py-16 bg-white">
+    <section id="reviews" class="py-16 bg-white dark:bg-slate-900">
         <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-slate-900 text-center mb-12">실제 성적 향상 후기</h2>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white text-center mb-12">실제 성적 향상 후기</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- 후기 카드 1 -->
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-xs font-semibold bg-green-100 text-green-700 px-2.5 py-1 rounded">5등급 ➔ 1등급 (6개월 만에 달성)</span>
-                        <span class="text-xs text-slate-400">OO고 2학년OOO 학생</span>
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <div class="flex justify-between items-center mb-4 gap-2">
+                        <span class="text-xs font-semibold bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-2.5 py-1 rounded">5등급 ➔ 1등급 (6개월 만에 달성)</span>
+                        <span class="text-xs text-slate-400 dark:text-slate-500">OO고 2학년OOO 학생</span>
                     </div>
-                    <p class="text-slate-700 text-sm leading-relaxed">
+                    <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed">
                         "항상 개념이 부족해서 응용 문제만 나오면 막혔는데, 선생님께서 개념을 직관적으로 설명해 주신 덕분에 문제 보는 눈이 트였습니다. 자신감이 생겨서 이번 시험에서 1등급 받았어요!"
                     </p>
                 </div>
                 <!-- 후기 카드 2 -->
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-xs font-semibold bg-green-100 text-green-700 px-2.5 py-1 rounded">중간고사 전교 1등</span>
-                        <span class="text-xs text-slate-400">OO중 3학년 OOO 학생 학부모님</span>
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <div class="flex justify-between items-center mb-4 gap-2">
+                        <span class="text-xs font-semibold bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-2.5 py-1 rounded">중간고사 전교 1등</span>
+                        <span class="text-xs text-slate-400 dark:text-slate-500">OO중 3학년 OOO 학생 학부모님</span>
                     </div>
-                    <p class="text-slate-700 text-sm leading-relaxed">
+                    <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed">
                         "매주 진도 상황과 아이의 장단점을 꼼꼼히 정리해서 카톡으로 전달해 주셔서 너무 안심이 됩니다. 아이도 과외 시간을 기다릴 정도로 선생님을 좋아해요."
                     </p>
                 </div>
                 <!-- 후기 카드 3 -->
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-xs font-semibold bg-green-100 text-green-700 px-2.5 py-1 rounded">내신 4등급 ➔ 2등급 (한 학기 만에 달성)</span>
-                        <span class="text-xs text-slate-400">OO고 1학년 OOO 학생</span>
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <div class="flex justify-between items-center mb-4 gap-2">
+                        <span class="text-xs font-semibold bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-2.5 py-1 rounded">내신 4등급 ➔ 2등급 (한 학기 만에 달성)</span>
+                        <span class="text-xs text-slate-400 dark:text-slate-500">OO고 1학년 OOO 학생</span>
                     </div>
-                    <p class="text-slate-700 text-sm leading-relaxed">
+                    <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed">
                         "문제만 많이 풀어도 점수가 안 오르던 상태였는데, 선생님과 약점 단원부터 차근차근 정리하니 실수가 줄고 풀이 속도가 빨라졌어요. 기말고사에서 2등급 받아서 정말 뿌듯합니다!"
                     </p>
                 </div>
@@ -152,39 +177,39 @@
     </section>
 
     <!-- Process Section -->
-    <section id="process" class="py-16 bg-slate-50">
+    <section id="process" class="py-16 bg-slate-50 dark:bg-slate-950">
         <div class="max-w-6xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-12">수업 진행 절차</h2>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-12">수업 진행 절차</h2>
             <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm w-full md:w-1/4">
-                    <span class="text-indigo-600 font-bold block mb-2">STEP 1</span>
-                    <h4 class="font-bold mb-1">상담 접수</h4>
-                    <p class="text-xs text-slate-500">전화/문자/카톡 문의</p>
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-transparent dark:border-slate-800 w-full md:w-1/4">
+                    <span class="text-indigo-600 dark:text-indigo-400 font-bold block mb-2">STEP 1</span>
+                    <h4 class="font-bold mb-1 text-slate-900 dark:text-white">상담 접수</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">전화/문자/카톡 문의</p>
                 </div>
-                <span class="hidden md:inline text-slate-300 font-bold">➔</span>
-                <div class="bg-white p-6 rounded-xl shadow-sm w-full md:w-1/4">
-                    <span class="text-indigo-600 font-bold block mb-2">STEP 2</span>
-                    <h4 class="font-bold mb-1">무료 시범수업 및 진단</h4>
-                    <p class="text-xs text-slate-500">레벨 테스트 & 성향 분석</p>
+                <span class="hidden md:inline text-slate-300 dark:text-slate-600 font-bold">➔</span>
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-transparent dark:border-slate-800 w-full md:w-1/4">
+                    <span class="text-indigo-600 dark:text-indigo-400 font-bold block mb-2">STEP 2</span>
+                    <h4 class="font-bold mb-1 text-slate-900 dark:text-white">무료 시범수업 및 진단</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">레벨 테스트 & 성향 분석</p>
                 </div>
-                <span class="hidden md:inline text-slate-300 font-bold">➔</span>
-                <div class="bg-white p-6 rounded-xl shadow-sm w-full md:w-1/4">
-                    <span class="text-indigo-600 font-bold block mb-2">STEP 3</span>
-                    <h4 class="font-bold mb-1">맞춤 플랜 수립</h4>
-                    <p class="text-xs text-slate-500">목표 등급 설정 및 커리큘럼 확정</p>
+                <span class="hidden md:inline text-slate-300 dark:text-slate-600 font-bold">➔</span>
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-transparent dark:border-slate-800 w-full md:w-1/4">
+                    <span class="text-indigo-600 dark:text-indigo-400 font-bold block mb-2">STEP 3</span>
+                    <h4 class="font-bold mb-1 text-slate-900 dark:text-white">맞춤 플랜 수립</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">목표 등급 설정 및 커리큘럼 확정</p>
                 </div>
-                <span class="hidden md:inline text-slate-300 font-bold">➔</span>
-                <div class="bg-white p-6 rounded-xl shadow-sm w-full md:w-1/4">
-                    <span class="text-indigo-600 font-bold block mb-2">STEP 4</span>
-                    <h4 class="font-bold mb-1">본 수업 시작</h4>
-                    <p class="text-xs text-slate-500">1:1 밀착 관리 & 피드백</p>
+                <span class="hidden md:inline text-slate-300 dark:text-slate-600 font-bold">➔</span>
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-transparent dark:border-slate-800 w-full md:w-1/4">
+                    <span class="text-indigo-600 dark:text-indigo-400 font-bold block mb-2">STEP 4</span>
+                    <h4 class="font-bold mb-1 text-slate-900 dark:text-white">본 수업 시작</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">1:1 밀착 관리 & 피드백</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact / Form Section -->
-    <section id="contact" class="py-16 bg-indigo-600 text-white">
+    <section id="contact" class="py-16 bg-indigo-600 dark:bg-indigo-700 text-white">
         <div class="max-w-xl mx-auto px-4">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold mb-3">무료 시범수업 & 상담 신청</h2>
@@ -192,18 +217,18 @@
             </div>
 
             <!-- 구글 폼 연동 또는 오픈채팅으로 연결 가능 -->
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="bg-white p-8 rounded-2xl shadow-xl text-slate-800 space-y-4">
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl text-slate-800 dark:text-slate-100 space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">학생 이름 / 학년</label>
-                    <input type="text" name="student_info" placeholder="예: 홍길동 / 고등학교 2학년" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">학생 이름 / 학년</label>
+                    <input type="text" name="student_info" placeholder="예: 홍길동 / 고등학교 2학년" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">연락처</label>
-                    <input type="tel" name="phone" placeholder="010-0000-0000" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">연락처</label>
+                    <input type="tel" name="phone" placeholder="010-0000-0000" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">희망 과목 및 고민사항</label>
-                    <textarea name="message" rows="3" placeholder="예: 수학 3등급인데 수능 1등급 목표입니다. 개념부터 다시 잡고 싶습니다." class="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">희망 과목 및 고민사항</label>
+                    <textarea name="message" rows="3" placeholder="예: 수학 3등급인데 수능 1등급 목표입니다. 개념부터 다시 잡고 싶습니다." class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
                 <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition">상담 신청하기</button>
             </form>
@@ -217,6 +242,24 @@
             <p>&copy; 2026 Tutor. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        (function () {
+            var toggle = document.getElementById('theme-toggle');
+            if (!toggle) return;
+
+            function setTheme(dark) {
+                document.documentElement.classList.toggle('dark', dark);
+                try {
+                    localStorage.setItem('theme', dark ? 'dark' : 'light');
+                } catch (e) {}
+            }
+
+            toggle.addEventListener('click', function () {
+                setTheme(!document.documentElement.classList.contains('dark'));
+            });
+        })();
+    </script>
 
 </body>
 </html>
