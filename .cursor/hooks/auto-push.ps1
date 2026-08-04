@@ -51,11 +51,6 @@ try {
 
     $env:GCM_INTERACTIVE = 'never'
     & $gitCmd -c credential.helper=manager push origin HEAD 2>$null | Out-Null
-
-    # Also deploy to the tutor Pages project (tutor-*.pages.dev)
-    $env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'User')
-    $deployScript = Join-Path $PSScriptRoot 'deploy-cloudflare.ps1'
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $deployScript 2>$null | Out-Null
 }
 finally {
     Remove-Item $lockFile -Force -ErrorAction SilentlyContinue
