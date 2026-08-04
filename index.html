@@ -270,21 +270,22 @@
             </div>
 
             <form id="comment-form" action="https://formspree.io/f/moeaadww" method="POST" class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 space-y-4 mb-8">
-                <input type="hidden" name="_subject" value="[과외 사이트] 신규 댓글">
+                <input type="hidden" name="_subject" value="[댓글] 과외 사이트 새 댓글">
+                <input type="hidden" name="신청구분" value="댓글">
                 <input type="hidden" name="form_type" value="comment">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label for="comment-name" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">이름</label>
-                        <input id="comment-name" type="text" name="name" placeholder="닉네임 또는 이름" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input id="comment-name" type="text" name="작성자" placeholder="닉네임 또는 이름" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
                         <label for="comment-email" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">이메일 (선택)</label>
-                        <input id="comment-email" type="email" name="email" placeholder="example@email.com" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input id="comment-email" type="email" name="이메일" placeholder="example@email.com" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                 </div>
                 <div>
                     <label for="comment-message" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">댓글</label>
-                    <textarea id="comment-message" name="message" rows="4" placeholder="궁금한 점이나 후기를 적어 주세요." required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <textarea id="comment-message" name="댓글내용" rows="4" placeholder="궁금한 점이나 후기를 적어 주세요." required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
                 <button id="comment-submit" type="submit" class="w-full sm:w-auto bg-indigo-600 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition disabled:opacity-60 disabled:cursor-not-allowed">댓글 등록</button>
                 <p id="comment-status" class="text-sm hidden" role="status" aria-live="polite"></p>
