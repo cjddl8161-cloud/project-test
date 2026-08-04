@@ -1,4 +1,4 @@
-# Auto commit + push local changes to origin
+# Auto commit + push local changes to GitHub (Cloudflare deploys from GitHub)
 $ErrorActionPreference = 'Continue'
 
 # Consume hook stdin (JSON) so the pipe does not hang
